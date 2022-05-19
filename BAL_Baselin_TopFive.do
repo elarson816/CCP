@@ -10,12 +10,11 @@ foreach list in $list {
 	recode  `var1'_`list' 0 = .
 	
 	* Count of people who heard of method in region
-	egen n_`var1'_`list'_reg=count(`var1'_`list'), by(county_id)
-	
-	
+	egen n_`var1'_`list'=count(`var1'_`list'), by(county_id)
+		
 	* Percent of people in the region who heard of method
-	gen p_`var2'_`list'_reg=n_`var1'_`list'_reg/N_region
-	
+	gen p_`var2'_`list'=n_`var1'_`list'/N_region
+
 	* Recode back
 	recode `var1'_`list' . = 0
 	
@@ -23,110 +22,70 @@ foreach list in $list {
 	
 	* Top
 	order *, sequential
-	egen top5_1_`var1'=rowmax(p_`var2'_`first'_reg-p_`var2'_`last'_reg)
+	egen top5_1_`var1'=rowmax(p_`var2'_`first'-p_`var2'_`last')
 	
 	gen top5_1_`var1'_item=""
 	
 		foreach list in $list {
+			replace top5_1_`var1'_item="`list'" if top5_1_`var1'==p_`var2'_`list'
+			replace p_`var2'_`list'=0 if top5_1_`var1'==p_`var2'_`list'
+		}
 			
-			* Change top percent to 0 and create variable indicating the top method
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_1_`var1' & county_id==22
-				replace top5_1_`var1'_item="`list'" if county_id==22 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_1_`var1'_item=="`list'" & county_id==22
-			
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_1_`var1' & county_id==23
-				replace top5_1_`var1'_item="`list'" if county_id==23 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_1_`var1'_item=="`list'" & county_id==23
-			
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_1_`var1' & county_id==24
-				replace top5_1_`var1'_item="`list'" if county_id==24 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_1_`var1'_item=="`list'" & county_id==24
-			}
+	label var top5_1_`var1' "Most common % (`var1')"
+	label var top5_1_`var1'_item "Most common item (`var1')"
 	
 	* Second 
 	order *, sequential
-	egen top5_2_`var1'=rowmax(p_`var2'_`first'_reg-p_`var2'_`last'_reg)
+	egen top5_2_`var1'=rowmax(p_`var2'_`first'-p_`var2'_`last')
 	
 	gen top5_2_`var1'_item=""
 	
-		foreach list in $list {
-			
-			* Change top percent to 0 and create variable indicating the top method
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_2_`var1' & county_id==22
-				replace top5_2_`var1'_item="`list'" if county_id==22 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_2_`var1'_item=="`list'" & county_id==22
-			
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_2_`var1' & county_id==23
-				replace top5_2_`var1'_item="`list'" if county_id==23 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_2_`var1'_item=="`list'" & county_id==23
-			
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_2_`var1' & county_id==24
-				replace top5_2_`var1'_item="`list'" if county_id==24 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_2_`var1'_item=="`list'" & county_id==24
-			}
+		foreach list in $list {		
+			replace top5_2_`var1'_item="`list'" if top5_2_`var1'==p_`var2'_`list'
+			replace p_`var2'_`list'=0 if top5_2_`var1'==p_`var2'_`list'
+		}
+
+	label var top5_2_`var1' "Second most common % (`var1')"
+	label var top5_2_`var1'_item "Second most common item (`var1')"
 	
 	* Third
 	order *, sequential
-	egen top5_3_`var1'=rowmax(p_`var2'_`first'_reg-p_`var2'_`last'_reg)
+	egen top5_3_`var1'=rowmax(p_`var2'_`first'-p_`var2'_`last')
 
 	gen top5_3_`var1'_item=""	
 	
 		foreach list in $list {
-			
-			* Change top percent to 0 and create variable indicating the top method
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_3_`var1' & county_id==22
-				replace top5_3_`var1'_item="`list'" if county_id==22 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_3_`var1'_item=="`list'" & county_id==22
-				
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_3_`var1' & county_id==23
-				replace top5_3_`var1'_item="`list'" if county_id==23 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_3_`var1'_item=="`list'" & county_id==23
-				
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_3_`var1' & county_id==24
-				replace top5_3_`var1'_item="`list'" if county_id==24 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_3_`var1'_item=="`list'" & county_id==24
-			}
+			replace top5_3_`var1'_item="`list'" if top5_3_`var1'==p_`var2'_`list'
+			replace p_`var2'_`list'=0 if top5_3_`var1'==p_`var2'_`list'
+		}
+
+	label var top5_3_`var1' "Third most common % (`var1')"
+	label var top5_3_`var1'_item "Third most common item (`var1')"
 			
 	* Fourth
 	order *, sequential
-	egen top5_4_`var1'=rowmax(p_`var2'_`first'_reg-p_`var2'_`last'_reg)
+	egen top5_4_`var1'=rowmax(p_`var2'_`first'-p_`var2'_`last')
 
 	gen top5_4_`var1'_item=""	
 	
 		foreach list in $list {
-			
-			* Change top percent to 0 and create variable indicating the top method
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_4_`var1' & county_id==22
-				replace top5_4_`var1'_item="`list'" if county_id==22 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_4_`var1'_item=="`list'" & county_id==22
-				
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_4_`var1' & county_id==23
-				replace top5_4_`var1'_item="`list'" if county_id==23 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_4_`var1'_item=="`list'" & county_id==23
-				
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_4_`var1' & county_id==24
-				replace top5_4_`var1'_item="`list'" if county_id==24 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_4_`var1'_item=="`list'" & county_id==24
-			}
+			replace top5_4_`var1'_item="`list'" if top5_4_`var1'==p_`var2'_`list'
+			replace p_`var2'_`list'=0 if top5_4_`var1'==p_`var2'_`list'
+		}
+
+	label var top5_4_`var1' "Fourth most common % (`var1')"
+	label var top5_4_`var1'_item "Fourth most common item (`var1')"
 	
 	* Fifth
 	order *, sequential
-	egen top5_5_`var1'=rowmax(p_`var2'_`first'_reg-p_`var2'_`last'_reg)	
+	egen top5_5_`var1'=rowmax(p_`var2'_`first'-p_`var2'_`last')	
 	
 	gen top5_5_`var1'_item=""
 	
 		foreach list in $list {
-			
-			* Change top percent to 0 and create variable indicating the top method
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_5_`var1' & county_id==22
-				replace top5_5_`var1'_item="`list'" if county_id==22 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_5_`var1'_item=="`list'" & county_id==22
+			replace top5_5_`var1'_item="`list'" if top5_5_`var1'==p_`var2'_`list'
+			replace p_`var2'_`list'=0 if top5_5_`var1'==p_`var2'_`list'
+		}
 				
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_5_`var1' & county_id==23
-				replace top5_5_`var1'_item="`list'" if county_id==23 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_4_`var1'_item=="`list'" & county_id==23
-				
-			replace p_`var2'_`list'_reg=0 if p_`var2'_`list'_reg==top5_5_`var1' & county_id==24
-				replace top5_5_`var1'_item="`list'" if county_id==24 & p_`var2'_`list'_reg==0
-				replace p_`var2'_`list'_reg=. if top5_4_`var1'_item=="`list'" & county_id==25
-			}
+	label var top5_5_`var1' "Fifth most common % (`var1')"
+	label var top5_5_`var1'_item "Fifth most common item (`var1')"
