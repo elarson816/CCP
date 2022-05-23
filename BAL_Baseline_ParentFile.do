@@ -15,8 +15,8 @@ capture log close
 ********************************************************
 
 * Directory
-cd "/Users/Beth/Documents/CCP/BA_Adolsecents_Liberia"
-global directory "/Users/Beth/Documents/CCP/BA_Adolsecents_Liberia"
+cd "/Users/ealarson/Documents/CCP/BA_Adolsecents_Liberia"
+global directory "/Users/ealarson/Documents/CCP/BA_Adolsecents_Liberia"
 
 * Datasets
 global male_data "1. Data/BAL_baseline_maleadolescent_cleaned_dataset_v4.dta"
@@ -41,10 +41,10 @@ global todaysdate: di trim("`newdate'")
 global putexcel_set "2. Analysis/BAL Baseline Dummy Tables Adolescent 02.xlsx"
 
 * Set TopFive Program
-global topfive "/Users/Beth/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_TopFive.do"
+global topfive "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_TopFive.do"
 
 * Set GEM Program
-global gem "/Users/Beth/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_GEM_CoupleCommunication.do"
+global gem "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_GEM_CoupleCommunication.do"
 
 * Set macros for cells (General Tables)
 global cellnum1 5
@@ -91,7 +91,7 @@ log using "2. Analysis/BAL_Baseline_Adolescent_FamilyPlanning_$date.log", replac
 *** READ IN DO FILES ***
 ********************************************************
 
-do "/Users/Beth/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Cleaning.do"
-do "/Users/Beth/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Tables.do"
-do "/Users/Beth/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Bivariate.do"
-do "/Users/Beth/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Multivariate.do"
+do "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Cleaning.do"
+do "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Tables.do"
+do "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Bivariate.do"
+do "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Multivariate.do"

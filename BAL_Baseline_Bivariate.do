@@ -21,19 +21,19 @@ putexcel set "$putexcel_set", modify sheet("`bi_part_1'")
 local N `cellnum3'
 
 * Create counts
-sum cp if cp==1
-matrix n_cp=r(N)
-local n_cp=r(N)
+sum mcp if mcp==1
+matrix n_mcp=r(N)
+local n_mcp=r(N)
 
 * Enter Ns
-local celltext (N=`n_cp')
+local celltext (N=`n_mcp')
 putexcel `chi2_col'`N'="`celltext'"
 
 local N=`N'+4
 
 * Knows methods
 foreach method in trad shortacting larc gt_median {
-	tab heard_combined_`method' cp, ro chi matcell(table)
+	tab heard_combined_`method' mcp, ro chi matcell(table)
 	
 		** Counts
 		matrix n_`method'_no=table[1,2]
@@ -59,7 +59,7 @@ foreach method in trad shortacting larc gt_median {
 	
 * Perced risk, self-efficacy and perceived norms
 foreach item in pregnancy_risk fp_self_efficacy fp_perceived_norms {
-	tab `item' cp, ro chi matcell(table)
+	tab `item' mcp, ro chi matcell(table)
 		
 		*** Counts
 		matrix n_low_`item'= table[1,2]
@@ -89,7 +89,7 @@ foreach item in pregnancy_risk fp_self_efficacy fp_perceived_norms {
 	}
 
 * Favorable FP attitudes
-tab median_fp_attitude cp, ro chi matcell(table)
+tab median_fp_attitude mcp, ro chi matcell(table)
 
 		** Counts
 		matrix n_attitude_no=table[1,2]
@@ -112,7 +112,7 @@ tab median_fp_attitude cp, ro chi matcell(table)
 			local N=`N'+2
 			
 * Couple Communication
-tab couple_communication cp, ro chi matcell(table)
+tab couple_communication mcp, ro chi matcell(table)
 		
 		*** Counts
 		matrix n_low= table[1,2]
@@ -141,7 +141,7 @@ tab couple_communication cp, ro chi matcell(table)
 	local N=`N'+2	
 
 * Used FP services in last 12 months
-tab visited_provider_12mo cp, ro chi matcell(table)
+tab visited_provider_12mo mcp, ro chi matcell(table)
 
 		** Counts
 		matrix n_visited_no=table[1,2]
@@ -164,33 +164,59 @@ tab visited_provider_12mo cp, ro chi matcell(table)
 			local N=`N'+2
 
 * Patient Information Index
-tab PII cp, ro chi matcell(table)
+tab MII mcp, ro chi matcell(table)
 
 		** Counts
-		matrix n_PII_no=table[1,2]
-		matrix n_PII_no_total=table[1,1]+table[1,2]
-		matrix n_PII_yes=table[2,2]
-		matrix n_PII_yes_total=table[2,1]+table[2,2]
+		matrix n_MII_no=table[1,2]
+		matrix n_MII_no_total=table[1,1]+table[1,2]
+		matrix n_MII_yes=table[2,2]
+		matrix n_MII_yes_total=table[2,1]+table[2,2]
 		
 		** Percents
-		matrix p_PII_no=n_PII_no[1,1]/n_PII_no_total[1,1]
-		matrix p_PII_yes=n_PII_yes[1,1]/n_PII_yes_total[1,1]
+		matrix p_MII_no=n_MII_no[1,1]/n_MII_no_total[1,1]
+		matrix p_MII_yes=n_MII_yes[1,1]/n_MII_yes_total[1,1]
 		
 		** Chi2
-		matrix chi2_PII=r(p)
+		matrix chi2_MII=r(p)
 		
 		** PutExcel
-		putexcel `fp_col'`N'=matrix(p_PII_no)
+		putexcel `fp_col'`N'=matrix(p_MII_no)
 			local N=`N'+1
-		putexcel `fp_col'`N'=matrix(p_PII_yes)
-		putexcel `chi2_col'`N'=matrix(chi2_PII)
+		putexcel `fp_col'`N'=matrix(p_MII_yes)
+		putexcel `chi2_col'`N'=matrix(chi2_MII)
 			local N=`N'+2
 			
 * Used FP services and quality received
+tab used_fp_quality mcp, ro chi matcell(table)
+
+		** Counts
+		matrix n_quality_novisit=table[1,2]
+		matrix n_quality_novisit_no_total=table[1,1]+table[1,2]
+		matrix n_quality_poor=table[2,2]
+		matrix n_quality_poor_total=table[2,1]+table[2,2]
+		matrix n_quality_good=table[3,2]
+		matrix n_quality_poor_total=table[3,1]+table[3,2]
+		
+		** Percents
+		matrix p_quality_novisit=n_quality_novisit[1,1]/n_quality_novisit_no_total[1,1]
+		matrix p_quality_poor=n_quality_poor[1,1]/n_quality_poor_total[1,1]
+		matrix p_quality_good=n_quality_good[1,1]/n_quality_poor_total[1,1]
+		
+		** Chi2
+		matrix chi2_quality=r(p)
+		
+		** PutExcel
+		putexcel `fp_col'`N'=matrix(p_quality_novisit)
+			local N=`N'+1
+		putexcel `fp_col'`N'=matrix(p_quality_poor)
+			local N=`N'+1
+		putexcel `fp_col'`N'=matrix(p_quality_good)
+		putexcel `chi2_col'`N'=matrix(chi2_quality)
+			local N=`N'+2
 
 * Stressful and Supportive Environments
 foreach item in stressful supportive {
-	tab home_pregnancy_`item' cp, ro chi matcell(table)
+	tab home_pregnancy_`item' mcp, ro chi matcell(table)
 		
 		*** Counts
 		matrix n_low_`item'= table[1,2]
@@ -218,7 +244,7 @@ foreach item in stressful supportive {
 	
 	local N=`N'+2	
 	}
-
+assert 0
 ********************************************************
 *** Part 2 ***
 ********************************************************
@@ -229,19 +255,19 @@ putexcel set "$putexcel_set", modify sheet("`bi_part_2'")
 local N `cellnum3'
 
 * Create counts
-sum cp if cp==1
-matrix n_cp=r(N)
-local n_cp=r(N)
+sum mcp if mcp==1
+matrix n_mcp=r(N)
+local n_mcp=r(N)
 
 * Enter Ns
-local celltext (N=`n_cp')
+local celltext (N=`n_mcp')
 putexcel `chi2_col'`N'="`celltext'"
 
 local N=`N'+4
 
 * GEM Indexes
 foreach index in pv rh sr dcdl {
-	tab gem_`index'_index cp, ro chi matcell(table)
+	tab gem_`index'_index mcp, ro chi matcell(table)
 		
 		*** Counts
 		matrix n_low_`index'= table[1,2]
@@ -272,7 +298,7 @@ foreach index in pv rh sr dcdl {
 	
 * Decision Making
 foreach decision in numchildren contraception selfill {
-	tab decision_`decision'_yn cp, ro chi matcell(table)
+	tab decision_`decision'_yn mcp, ro chi matcell(table)
 		
 		*** Generate Counts
 		matrix n_no_`decision'= table[1,2]
@@ -296,7 +322,7 @@ foreach decision in numchildren contraception selfill {
 	}
 	
 * Decision Making - All Three
-tab count_decision cp, ro chi matcell(table)
+tab count_decision mcp, ro chi matcell(table)
 
 	** Counts
 	matrix n_count_0=table[1,2]
@@ -327,7 +353,7 @@ tab count_decision cp, ro chi matcell(table)
 	local N=`N'+2
 	
 * Exposed for FP Messaging
-tab fp_messaging cp, ro chi matcell(table)
+tab fp_messaging mcp, ro chi matcell(table)
 		
 	*** Counts
 	matrix n_no= table[1,2]
@@ -351,7 +377,7 @@ tab fp_messaging cp, ro chi matcell(table)
 		
 * Media
 foreach item in radio tv cellphone {
-	tab media_`item'_often cp, ro chi matcell(table)
+	tab media_`item'_often mcp, ro chi matcell(table)
 	
 	*** Counts
 	matrix n_no_`item'= table[1,2]
@@ -385,18 +411,18 @@ putexcel set "$putexcel_set", modify sheet("`bi_part_3'")
 local N `cellnum3'
 
 * Create counts
-sum cp if cp==1
-matrix n_cp=r(N)
-local n_cp=r(N)
+sum mcp if mcp==1
+matrix n_mcp=r(N)
+local n_mcp=r(N)
 
 * Enter Ns
-local celltext (N=`n_cp')
+local celltext (N=`n_mcp')
 putexcel `chi2_col'`N'="`celltext'"
 
 local N=`N'+4
 
 * Age
-tab age_cat cp, ro chi matcell(table)
+tab age_cat mcp, ro chi matcell(table)
 		
 	*** Counts
 	matrix n_14_16= table[1,2]
@@ -419,7 +445,7 @@ tab age_cat cp, ro chi matcell(table)
 		local N=`N'+2
 		
 * Education
-tab education cp, ro chi matcell(table)
+tab education mcp, ro chi matcell(table)
 		
 	*** Counts
 	matrix n_primary= table[1,2]
@@ -445,7 +471,7 @@ tab education cp, ro chi matcell(table)
 			local N=`N'+2
 	
 * Area of residence
-tab ur cp, ro chi matcell(table)
+tab ur mcp, ro chi matcell(table)
 		
 	*** Counts
 	matrix n_urban= table[1,2]
@@ -468,7 +494,7 @@ tab ur cp, ro chi matcell(table)
 		local N=`N'+2		
 
 * Religion
-tab religion cp, ro chi matcell(table)
+tab religion mcp, ro chi matcell(table)
 		
 	*** Counts
 	matrix n_christian= table[1,2]
@@ -496,7 +522,7 @@ tab religion cp, ro chi matcell(table)
 			local N=`N'+2
 
 * Marital Status
-tab inunion cp, ro chi matcell(table)
+tab inunion mcp, ro chi matcell(table)
 		
 	*** Counts
 	matrix n_inunion= table[1,2]
@@ -519,7 +545,7 @@ tab inunion cp, ro chi matcell(table)
 		local N=`N'+2	
 		
 * Given Birth
-tab given_birth cp, ro chi matcell(table)
+tab given_birth mcp, ro chi matcell(table)
 		
 	*** Counts
 	matrix n_no= table[1,2]
@@ -543,7 +569,7 @@ tab given_birth cp, ro chi matcell(table)
 
 * Vulnerability and Standard of Living Indexes
 foreach index in vbl sl {
-	tab `index'_index cp, ro chi matcell(table)
+	tab `index'_index mcp, ro chi matcell(table)
 	
 		*** Counts
 		matrix n_low_`index'= table[1,2]
@@ -573,7 +599,7 @@ foreach index in vbl sl {
 	}
 	
 * County of residence
-tab county_id cp, ro chi matcell(table)
+tab county_id mcp, ro chi matcell(table)
 
 	*** Counts
 	matrix n_bomi= table[1,2]

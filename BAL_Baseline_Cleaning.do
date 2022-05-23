@@ -108,7 +108,7 @@ gen count_decision=0
 
 * FP messaging
 rename me_917 fp_messaging
-	recode fp_messaging -98=.
+	recode fp_messaging -98=1
 	
 * Currently Using a Contraceptive Method
 gen cp=0
@@ -236,19 +236,31 @@ rename fp_403 visited_provider_12mo
 
 * Informed of family planning methods they already knew about
 rename fp_404 provider_informed_knowmethods
-	recode provider_informed_knowmethods -98=.
+	recode provider_informed_knowmethods -98=1
 
 * Provider informed of problems/delayed pregnancy
 rename fp_405 provider_informed_problems
-	recode provider_informed_problems -98=.
+	recode provider_informed_problems -98=1
 
 * Provider informed in case of problems
 rename fp_406 provider_informed_whattodo
-	recode provider_informed_whattodo -98=.
+	recode provider_informed_whattodo -98=1
 	
 * Gen Patient Information Index
-gen PII=0
-	replace PII=1 if provider_informed_knowmethods==1 & provider_informed_problems==1 & provider_informed_whattodo==1
+gen MII=0
+	replace MII=1 if provider_informed_knowmethods==1 & provider_informed_problems==1 & provider_informed_whattodo==1
+	
+* Used FP services and quality received
+gen used_fp_yesquality=0
+	replace used_fp_yesquality=1 if MII==1 & visited_provider_12mo==1
+gen used_fp_notquality=0
+	replace used_fp_notquality=1 if visited_provider_12mo==1 & MII==0
+gen used_fp_quality=1 if visited_provider_12mo==0
+	replace used_fp_quality=2 if used_fp_notquality==1
+	replace used_fp_quality=3 if used_fp_yesquality==1
+
+	label define fp_quality 1 "Did not use" 2 "Used, poor quality" 3 "Used, good quality"
+	label val used_fp_quality fp_quality
 	
 * Listens to the radio 
 rename me_901 media_radio
@@ -410,15 +422,15 @@ rename fp_403 visited_provider_12mo
 
 * Informed of family planning methods they already knew about
 rename fp_404 provider_informed_knowmethods
-	recode provider_informed_knowmethods -98=.
+	recode provider_informed_knowmethods -98=1
 
 * Provider informed of problems/delayed pregnancy
 rename fp_405 provider_informed_problems
-	recode provider_informed_problems -98=.
+	recode provider_informed_problems -98=1
 
 * Provider informed in case of problems
 rename fp_406 provider_informed_whattodo
-	recode provider_informed_whattodo -98=.
+	recode provider_informed_whattodo -98=1
 
 * Current family planning method
 capture rename fp_407_1 current_nomethod
