@@ -2,7 +2,7 @@
 cd $directory
 
 * Set TopFive Program
-local topfive "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_TopFive.do"
+local topfive $topfive
 
 ********************************************************
 *** GENERATE SEPARATE FEMALE AND TOTAL DATASETS ***
@@ -205,6 +205,31 @@ gen heard_combined_gt_median=1 if count_heard_combined>=median_heard_combined
 	
 * Perceived risk of pregnancy
 rename fp_411 pregnancy_risk
+	recode pregnancy_risk -98=.
+	recode pregnancy_risk (0 2 10 20 30=1) (40 50 60=2) (70 80 90 100=3)
+	
+
+* Self-efficacy to use FP
+rename fp_412 fp_self_efficacy
+	recode fp_self_efficacy (0 2 10 20 30=1) (40 50 60=2) (70 80 90 100=3)
+	label val fp_self_efficacy beans
+
+* Perceived norms
+rename fp_427 fp_perceived_norms
+
+* Favorable FP attitudes median
+gen fp_attitude=0
+forvalues num = 414/422 {
+	replace fp_attitude=fp_attitude+fp_`num'
+	}
+
+egen median_fp_attitude_overall=median(fp_attitude)
+
+gen median_fp_attitude=0 if fp_attitude<median_fp_attitude_overall
+	replace median_fp_attitude=1 if fp_attitude>=median_fp_attitude_overall
+	
+* Couple Communication
+rename ls_501_1_cat couple_communication
 
 * Seen a family planning provider in the last 12 months
 rename fp_403 visited_provider_12mo
@@ -261,7 +286,7 @@ gen given_birth=0 if mch_204==.
 	replace given_birth=1 if mch_204!=.
 	
 * Run Couple Communication .do file
-do "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_GEM_CoupleCommunication.do"
+do $gem
 
 save "1. Data/baseline_femaledata.dta", replace
 		
@@ -403,7 +428,7 @@ capture rename fp_407_4 current_ec
 capture rename fp_407_5 current_mc
 capture rename fp_407_6 current_fc
 capture rename fp_407_7 current_othermodern
-capture rename fp_408_8 current_iud
+capture rename fp_407_8 current_iud
 capture rename fp_407_9 current_implants
 capture rename fp_407_10 current_fs
 capture rename fp_407_11 current_ms
@@ -452,15 +477,15 @@ capture rename fp_408_7 reason_family
 capture rename fp_408_8 reason_health
 capture rename fp_408_9 reaason_methodnotavailable
 capture rename fp_408_10 reason_price
-capture rename fp_408_11 reason_sideffects
+capture rename fp_408_11 reason_sideeffects
 capture rename fp_408_12 reason_noteffective
 capture rename fp_408_13 reason_distance
-capture rename fp_408_14 reason_noreason
+capture rename fp_408_14 reason_nointerest
 capture rename fp_408_97 reason_other
 capture rename fp_408__98 reason_dontknow
 
 	** Generate reasons if they don't exist
-	foreach reason in nosex dontknowmethods infecund wanttogetpregnant partner religion family health methodnotavailable price sideeffects noteffective distance noreason other dontknow {
+	foreach reason in nosex dontknowmethods infecund wanttogetpregnant partner religion family health methodnotavailable price sideeffects noteffective distance nointerest other dontknow {
 		capture confirm var reason_`reason'
 		if _rc!=0 {
 			gen reason_`reason'=0
@@ -468,7 +493,7 @@ capture rename fp_408__98 reason_dontknow
 		}
 		
 	** Top 5
-	global list nosex dontknowmethods infecund wanttogetpregnant partner religion family health methodnotavailable price sideeffects noteffective distance noreason other dontknow
+	global list nosex dontknowmethods infecund wanttogetpregnant partner religion family health methodnotavailable price sideeffects noteffective distance nointerest other dontknow
 	global var1 reason
 	global var2 r
 	global first distance

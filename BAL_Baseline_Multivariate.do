@@ -33,7 +33,9 @@ corr gem_pv_index gem_rh_index gem_sr_index
 logistic cp ur ib24.county_id ///
 			age_cat inunion education i.religion ///
 			heard_combined_gt_median ///
+			i.fp_self_efficacy i.fp_perceived_norms median_fp_attitude ///
 			visited_provider_12mo PII ///
+			i.home_pregnancy_supportive ///
 			fp_messaging media_cellphone_often ///
 			i.gem_pv_index i.gem_rh_index i.gem_sr_index ///
 			decision_numchildren_yn decision_contraception_yn decision_selfill_yn i.couple_communication_index ///
@@ -44,13 +46,15 @@ logistic cp ur ib24.county_id ///
 			
 * Run the regression
 logistic mcp ur ib24.county_id ///
-			age_cat inunion education i.religion ///
-			heard_combined_gt_median ///
-			visited_provider_12mo PII ///
-			fp_messaging media_cellphone_often ///
-			i.gem_pv_index i.gem_rh_index i.gem_sr_index ///
-			decision_numchildren_yn decision_contraception_yn decision_selfill_yn i.couple_communication_index ///
-			media_radio_often media_tv_often
+			 age_cat inunion education i.religion ///
+			 heard_combined_gt_median ///
+			 i.fp_self_efficacy i.fp_perceived_norms median_fp_attitude ///
+			 visited_provider_12mo PII ///
+			 i.home_pregnancy_supportive ///
+			 fp_messaging media_cellphone_often ///
+			 i.gem_pv_index i.gem_rh_index i.gem_sr_index ///
+			 decision_numchildren_yn decision_contraception_yn decision_selfill_yn i.couple_communication_index ///
+			 media_radio_often media_tv_often
 			
 	** PutExcel
 	putexcel (J1)=etable
