@@ -47,26 +47,14 @@ global topfive "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_T
 global gem "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_GEM_CoupleCommunication.do"
 
 * Set macros for cells (General Tables)
-global cellnum1 5
-global female_ums_bongcol1 "B"
-global female_ums_bombicol1 "C"
-global female_ums_totalcol1 "D"
-global female_ums_controlol1 "E"
-global female_iu_bongcol1 "F"
-global female_iu_bombicol1 "G"
-global female_iu_totalcol1 "H"
-global female_iu_controlol1 "I"
-global male_bongcol1 "J"
-global male_bombicol1 "K"
-global male_totalcol1 "L"
-global male_controlol1 "M"
+global cellnum1 3
+global female_umscol "B"
+global female_iucol "C"
+global malecol "D"
 
 * Set macros for cells (Demographic Table)
 global cellnum2 2
-global female_bongcol "B"
-global female_bombicol "C"
-global female_controlcol "D"
-global female_totalcol "E"
+global female_totalcol "B"
 
 * Set macros for cells (Bivariate Analysis)
 global cellnum3 1

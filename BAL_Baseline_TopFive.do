@@ -9,11 +9,11 @@ foreach list in $list {
 	* Recode for counting
 	recode  `var1'_`list' 0 = .
 	
-	* Count of people who heard of method in region
-	egen n_`var1'_`list'=count(`var1'_`list'), by(county_id)
+	* Count of people who heard of method
+	egen n_`var1'_`list'=count(`var1'_`list')
 		
-	* Percent of people in the region who heard of method
-	gen p_`var2'_`list'=n_`var1'_`list'/N_region
+	* Percent of people who heard of method
+	gen p_`var2'_`list'=n_`var1'_`list'/total_n
 
 	* Recode back
 	recode `var1'_`list' . = 0

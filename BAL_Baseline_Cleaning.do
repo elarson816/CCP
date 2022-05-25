@@ -246,7 +246,7 @@ rename fp_405 provider_informed_problems
 rename fp_406 provider_informed_whattodo
 	recode provider_informed_whattodo -98=1
 	
-* Gen Patient Information Index
+* Gen Method Information Index
 gen MII=0
 	replace MII=1 if provider_informed_knowmethods==1 & provider_informed_problems==1 & provider_informed_whattodo==1
 	
@@ -315,13 +315,9 @@ use "$`sex'_data", clear
 * Only keep sexually active
 drop if fp_408_1==1
 
-* Number of people per region
-gen one=1
-egen N_region=count(one), by(county_id)
-
-* Generate total region 
-gen county_total=1 if inlist(county_id, 22, 23)
-egen N_region_total=count(one) if county_total==1
+* Generate n 
+gen n=1
+egen total_n=count(n)
 
 * Heard of Contraceptive Methods (self cited)
 capture rename fp_401_1 heard_self_pills
@@ -533,7 +529,7 @@ capture rename fp_409__98 previous_dk
 	
 	
 	** Generate reasons if they don't exist
-	foreach method in pills injectables ec mc fc othermodern iud implants fs ms breastfeed withdrawal calendar cyclebeads dk nomethod {
+	foreach method in pills injectables ec mc fc othermodern iud implants fs ms breastfeed withdrawal calendar cyclebeads other dk nomethod {
 		capture confirm var previous_`method'
 		if _rc!=0 {
 			gen previous_`method'=0
@@ -541,7 +537,7 @@ capture rename fp_409__98 previous_dk
 		}
 	
 	** Top 5
-	global list pills injectables ec mc fc othermodern iud implants fs ms breastfeed withdrawal calendar cyclebeads dk nomethod
+	global list pills injectables ec mc fc othermodern iud implants fs ms breastfeed withdrawal calendar cyclebeads dk other nomethod
 	global var1 previous
 	global var2 prev
 	global first breastfeed
@@ -668,7 +664,7 @@ label define lengthofuse 1 "<=6 months" 2 "6 - 12 months" 3 "13 - 24 months" 4 "
 rename fp_429 provider_received_advice
 
 * Only keep necessary variables
-keep id_random county_id N_region ///
+keep id_random county_id total_n ///
 	 heard_self* heard_prompted* heard_combined* ///
 	 visited_provider_12mo provider_* ///
 	 current_* reason_* previous_* ///
