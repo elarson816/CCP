@@ -12,10 +12,13 @@ capture log close
 ********************************************************
 *** SET UP DO FILE ***
 ********************************************************
+* User
+global user ealarson
+local user $user
 
 * Directory
-cd "/Users/Beth/Documents/CCP/BA_Liberia/Men and Women"
-global directory "/Users/Beth/Documents/CCP/BA_Liberia/Men and Women"
+cd "/Users/`user'/Documents/CCP/BA_Liberia/Men and Women"
+global directory "/Users/`user'/Documents/CCP/BA_Liberia/Men and Women"
 
 * Date 
 local today=c(current_date)
@@ -29,12 +32,10 @@ di trim("`newdate'")
 global todaysdate: di trim("`newdate'")
 
 * Set Put Excel
-global putexcel_set "/Users/Beth/Documents/CCP/BA_Liberia/Men and Women/2. Analysis/Men_Women_Report.xlsx"
+global putexcel_set "/Users/`user'/Documents/CCP/BA_Liberia/Men and Women/2. Analysis/Men_Women_Report.xlsx"
 
-* Set GEM Program
-global gem "/Users/Beth/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_GEM_CoupleCommunication.do"
 
-* Set macros for cells (General Tables)
+* Set macros for cells (Maternal Health)
 global R "1"
 global rowlabel "A"
 global women_collabel "B"
@@ -48,12 +49,25 @@ global men_intervention_col2 "G"
 global men_intervention_col3 "H"
 global men_control_col1 "I"
 
+* Set macros for cells (Psychosocial)
+global R "1"
+global rowlabel "A"
+global intervention_collab "B"
+global intervention_men "B"
+global intervention_women "C"
+global control_collab "D"
+global control_men "D"
+global control_women "E"
+global total_collab "F"
+global total_men "F"
+global total_women "G"
+
 	   
 * Create log
 log using "2. Analysis/BA_Liberia_Men_Women_Analysis_$date.log", replace
 
 * Call in data
-use "/Users/Beth/Documents/CCP/BA_Liberia/Men and Women/1. Data/BAL_baseline_women&men_cleaned_dataset_v4.dta", clear
+use "/Users/`user'/Documents/CCP/BA_Liberia/Men and Women/1. Data/BAL_baseline_women&men_cleaned_dataset_v4.dta", clear
 
 * Prep data
 drop if exclude==1
@@ -65,4 +79,5 @@ save "BA_Liberia_Men_Women_Analysis_Data.dta", replace
 *** READ IN DO FILES ***
 ********************************************************
 
-do "/Users/Beth/PMA_GitKraken/GitHub_Personal/CCP/BA_Liberia_MaternalHealth.do"
+*do "/Users/`user'/PMA_GitKraken/GitHub_Personal/CCP/BA_Liberia_MaternalHealth.do"
+do "/Users/`user'/PMA_GitKraken/GitHub_Personal/CCP/BA_Liberia_Psychosocial.do"

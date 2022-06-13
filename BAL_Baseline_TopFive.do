@@ -2,6 +2,7 @@ local var1 $var1
 local var2 $var2
 local first $first
 local last $last
+local sex $sex
 
 ** Top 5
 foreach list in $list {
@@ -13,7 +14,7 @@ foreach list in $list {
 	egen n_`var1'_`list'=count(`var1'_`list')
 		
 	* Percent of people who heard of method
-	gen p_`var2'_`list'=n_`var1'_`list'/total_n
+	gen p_`var2'_`list'=n_`var1'_`list'/total_n_`sex'
 
 	* Recode back
 	recode `var1'_`list' . = 0
