@@ -62,6 +62,15 @@ global total_collab "F"
 global total_men "F"
 global total_women "G"
 
+* Set macros for cells (Media)
+global R "1"
+global rowlabel "A"
+global women_collab "B"
+global women_intervention "B"
+global women_control "C"
+global men_collab "D"
+global men_intervention "D"
+global men_control "E"
 	   
 * Create log
 log using "2. Analysis/BA_Liberia_Men_Women_Analysis_$date.log", replace
@@ -73,11 +82,12 @@ use "/Users/`user'/Documents/CCP/BA_Liberia/Men and Women/1. Data/BAL_baseline_w
 drop if exclude==1
 gen one=1
 
-save "BA_Liberia_Men_Women_Analysis_Data.dta", replace
+save "/Users/`user'/Documents/CCP/BA_Liberia/Men and Women/1. Data/BA_Liberia_Men_Women_Analysis_Data.dta", replace
 
 ********************************************************
 *** READ IN DO FILES ***
 ********************************************************
 
 *do "/Users/`user'/PMA_GitKraken/GitHub_Personal/CCP/BA_Liberia_MaternalHealth.do"
-do "/Users/`user'/PMA_GitKraken/GitHub_Personal/CCP/BA_Liberia_Psychosocial.do"
+*do "/Users/`user'/PMA_GitKraken/GitHub_Personal/CCP/BA_Liberia_Psychosocial.do"
+do "/Users/`user'/PMA_GitKraken/GitHub_Personal/CCP/BA_Liberia_MediaSources.do"

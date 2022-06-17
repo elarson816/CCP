@@ -22,10 +22,10 @@ local norms $norms
 ********************************************************
 *** PART 1: CONTRACEPTIVE USE ***
 ********************************************************
-/*
+*
 foreach group in female_ums female_iu male {
 	
-use "1. Data/baseline_`group'data_merged.dta", clear
+use "1. Data/baseline_`group'data.dta", clear
 
 * Set putexcel
 putexcel set "$putexcel_set", modify sheet("`part_1'")
@@ -269,10 +269,10 @@ foreach length in 6mo 6mo_12mo 13mo_24mo 25mo_48mo 49mo {
 ********************************************************
 *** PART 2: Beans ***
 ********************************************************
-/*
+*
 foreach group in female_ums female_iu male {
 	
-use "1. Data/baseline_`group'data_merged.dta", clear
+use "1. Data/baseline_`group'data.dta", clear
 
 * Set putexcel
 putexcel set "$putexcel_set", modify sheet("`part_2'")
@@ -321,10 +321,10 @@ foreach bean in unwantedbelly fphelpprevent fpimproveslives wombproblems ///
 ********************************************************
 *** PART 3: Neighborhood ***
 ********************************************************	
-/*	
+*	
 foreach group in female_ums female_iu male {
 	
-use "1. Data/baseline_`group'data_merged.dta", clear
+use "1. Data/baseline_`group'data.dta", clear
 
 * Set putexcel
 putexcel set "$putexcel_set", modify sheet("`part_3'")
@@ -377,7 +377,7 @@ foreach number in usingfp fpadvice {
 	
 foreach group in female_ums female_iu male {
 	
-use "1. Data/baseline_`group'data_merged.dta", clear
+use "1. Data/baseline_`group'data.dta", clear
 
 * Set putexcel
 putexcel set "$putexcel_set", modify sheet("`part_4'")
@@ -495,7 +495,7 @@ foreach bean in providerneeds providerquestions providerinfo providerautonomy {
 ********************************************************
 *** Norms ***
 ********************************************************	
-		
+/*		
 use "1. Data/baseline_femaledata.dta", clear
 
 * Set putexcel

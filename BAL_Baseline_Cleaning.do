@@ -17,12 +17,7 @@ use "1. Data/BAL_baseline_femaleadol_cleaned_dataset_v4.dta", clear
 	keep if marital_status==1
 	gen id_random=_n
 	
-	save "1. Data/BAL_baseline_femaleadol_umsexactive_cleaned_dataset_v4.dta", replace
-	
-	recode county_id (22 23=22)
-	drop if county_id==24
-	
-	save "1. Data/BAL_baseline_femaleadol_umsexactive_total_cleaned_dataset_v4.dta", replace
+	save "1. Data/BAL_baseline_femaleadol_umsexactive.dta", replace
 	
 	restore
 	
@@ -32,30 +27,20 @@ use "1. Data/BAL_baseline_femaleadol_cleaned_dataset_v4.dta", clear
 	keep if inlist(marital_status, 2, 3)
 	gen id_random=_n
 	
-	save "1. Data/BAL_baseline_femaleadol_inunion_cleaned_dataset_v4.dta.dta", replace
-	
-	recode county_id (22 23=22)
-	drop if county_id==24
-	
-	save "1. Data/BAL_baseline_femaleadol_inunion_total_cleaned_dataset_v4.dta.dta", replace
+	save "1. Data/BAL_baseline_femaleadol_inunion.dta", replace
+
 	
 	restore
 	
 * Males
-use "1. Data/BAL_baseline_male adolescent_cleaned_dataset_v4.dta"
+use "1. Data/BAL_baseline_male adolescent_cleaned_dataset_v4.dta", clear
 
+keep if marital_status==3
 gen id_random=_n
 
-save "1. Data/BAL_baseline_maleadolescent_cleaned_dataset_v4.dta", replace
+save "1. Data/BAL_baseline_maleadol.dta", replace
+		
 
-preserve
-
-recode county_id (22 23=22)
-drop if county_id==24 
-
-save "1. Data/BAL_baseline_maleadolescent_total_cleaned_dataset_v4.dta", replace
-	
-restore	
 
 ********************************************************
 *** CLEAN FEMALE DATA ***
@@ -300,14 +285,14 @@ gen given_birth=0 if mch_204==.
 * Run Couple Communication .do file
 do $gem
 
-save "1. Data/baseline_femaledata.dta", replace
+save "1. Data/baseline_femaleadol.dta", replace
 		
 
 ********************************************************
 *** CLEAN FAMILY PLANNING DATA ***
 ********************************************************
 
-foreach sex in male female_ums female_iu male_total female_ums_total female_iu_total {
+foreach sex in male female_ums female_iu {
 	
 * Read in data
 use "$`sex'_data", clear
@@ -674,33 +659,5 @@ keep id_random county_id total_n ///
 save "1. Data/baseline_`sex'data.dta", replace
 }	
 
-********************************************************
-*** MERGE TOTAL AND ALL COUNTY DATASETS ***
-********************************************************
-
-* Setup Total Dataset for Merge
-foreach sex in female_iu_total female_ums_total male_total {
-	use "1. Data/baseline_`sex'data.dta", replace
-	
-	rename * *_t
-	rename id_random_t id_random
-	
-	save "1. Data/baseline_`sex'data_v2.dta", replace
-	}
-
-* Merge and Save Updated Datasets for Tables
-use "1. Data/baseline_female_iudata.dta", clear
-	merge 1:1 id_random  using "1. Data/baseline_female_iu_totaldata_v2.dta"
-	save "1. Data/baseline_female_iudata_merged.dta", replace
-	
-use "1. Data/baseline_female_umsdata.dta", clear
-	merge 1:1 id_random using "1. Data/baseline_female_ums_totaldata_v2.dta"
-	save "1. Data/baseline_female_umsdata_merged.dta", replace
-	
-use "1. Data/baseline_maledata.dta", clear
-	merge 1:1 id_random using "1. Data/baseline_male_totaldata_v2.dta"
-	save "1. Data/baseline_maledata_merged.dta", replace
-
-	
 	
 	

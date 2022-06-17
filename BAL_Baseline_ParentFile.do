@@ -15,16 +15,13 @@ capture log close
 ********************************************************
 
 * Directory
-cd "/Users/ealarson/Documents/CCP/BA_Adolsecents_Liberia"
-global directory "/Users/ealarson/Documents/CCP/BA_Adolsecents_Liberia"
+cd "/Users/ealarson/Documents/CCP/BA_Liberia/Adolescent"
+global directory "/Users/ealarson/Documents/CCP/BA_Liberia/Adolescent"
 
 * Datasets
-global male_data "1. Data/BAL_baseline_maleadolescent_cleaned_dataset_v4.dta"
-global male_total_data "1. Data/BAL_baseline_maleadolescent_total_cleaned_dataset_v4.dta"
-global female_ums_data "1. Data/BAL_baseline_femaleadol_umsexactive_cleaned_dataset_v4.dta"
-global female_ums_total_data "1. Data/BAL_baseline_femaleadol_umsexactive_total_cleaned_dataset_v4.dta"
-global female_iu_data "1. Data/BAL_baseline_femaleadol_inunion_cleaned_dataset_v4.dta.dta"
-global female_iu_total_data "1. Data/BAL_baseline_femaleadol_inunion_total_cleaned_dataset_v4.dta.dta"
+global male_data "1. Data/BAL_baseline_maleadol.dta"
+global female_ums_data "1. Data/BAL_baseline_femaleadol_umsexactive.dta"
+global female_iu_data "1. Data/BAL_baseline_femaleadol_inunion.dta"
 
 * Date 
 local today=c(current_date)
@@ -81,5 +78,5 @@ log using "2. Analysis/BAL_Baseline_Adolescent_FamilyPlanning_$date.log", replac
 
 do "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Cleaning.do"
 do "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Tables.do"
-do "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Bivariate.do"
-do "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Multivariate.do"
+*do "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Bivariate.do"
+*do "/Users/ealarson/PMA_GitKraken/GitHub_Personal/CCP/BAL_Baseline_Multivariate.do"

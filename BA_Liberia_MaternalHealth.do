@@ -242,7 +242,7 @@ local R=`R'+1
 putexcel `rowlabel'`R'="At Least One ANC"
 
 * Percents
-tab mch_217_cat county_id if female==1 & haschild2yrs==1, mi matcell(table)
+tab mch_215 county_id if female==1 & haschild2yrs==1, mi matcell(table)
 	matrix Bong_yes=table[1,2]+table[2,2]+table[3,2]
 	matrix Bong_total=table[1,2]+table[2,2]+table[3,2]+table[4,2]
 	
@@ -341,6 +341,108 @@ local R=`R'+1
 ** Reasons For No ANC
 *******************************************
 
+* Title 
+putexcel `rowlabel'`R'="Reasons for not seeking early ANC"
+	local R=`R'+1
+
+* Percents
+foreach reason in 1 2 3 4 6 7 8 15 97 {
+	tab mch_216_`reason' county_id if female==1 & haschild2yrs==1 & mch_215==1, matcell(table)
+	matrix Bomi_Yes_`reason'=table[2,1]
+	matrix Bomi_No_`reason'=table[1,1]
+	matrix Bomi_Total_`reason'=Bomi_Yes_`reason'[1,1]+Bomi_No_`reason'[1,1]
+	
+	matrix Bong_Yes_`reason'=table[2,2]
+	matrix Bong_No_`reason'=table[2,2]
+	matrix Bong_Total_`reason'=Bong_Yes_`reason'[1,1]+Bomi_No_`reason'[1,1]
+	
+	matrix Total_Yes_`reason'=Bomi_Yes_`reason'[1,1]+Bong_Yes_`reason'[1,1]
+	matrix Total_No_`reason'=Bomi_No_`reason'[1,1]+Bong_No_`reason'[1,1]
+	matrix Total_Total_`reason'=Bomi_Total_`reason'[1,1]+Bong_Total_`reason'[1,1]
+	
+	matrix Gbarpolu_Yes_`reason'=table[2,3]
+	matrix Gbarpolu_No_`reason'=table[1,3]
+	matrix Gbarpolu_Total_`reason'=Gbarpolu_Yes_`reason'[1,1]+Gbarpolu_No_`reason'[1,1]
+	
+	matrix     p_Bomi_Yes_`reason'=    Bomi_Yes_`reason'[1,1]/    Bomi_Total_`reason'[1,1]
+	matrix     p_Bong_Yes_`reason'=    Bong_Yes_`reason'[1,1]/    Bong_Total_`reason'[1,1]
+	matrix    p_Total_Yes_`reason'=   Total_Yes_`reason'[1,1]/   Total_Total_`reason'[1,1]
+	matrix p_Gbarpolu_Yes_`reason'=Gbarpolu_Yes_`reason'[1,1]/Gbarpolu_Total_`reason'[1,1]
+	}
+	
+* PutExcel
+	
+	** Cost
+	putexcel `rowlabel'`R'="Cost"
+	putexcel `women_intervention_col1'`R'= matrix(p_Bong_Yes_1)
+	putexcel `women_intervention_col2'`R'= matrix(p_Bomi_Yes_1)
+	putexcel `women_intervention_col3'`R'=matrix(p_Total_Yes_1)
+	putexcel `women_control_col1'`R'=  matrix(p_Gbarpolu_Yes_1)
+		local R=`R'+1
+		
+	** No Facility
+	putexcel `rowlabel'`R'="No Facility"
+	putexcel `women_intervention_col1'`R'= matrix(p_Bong_Yes_2)
+	putexcel `women_intervention_col2'`R'= matrix(p_Bomi_Yes_2)
+	putexcel `women_intervention_col3'`R'=matrix(p_Total_Yes_2)
+	putexcel `women_control_col1'`R'=  matrix(p_Gbarpolu_Yes_2)
+		local R=`R'+1
+		
+	** Too far/No Transportation
+	putexcel `rowlabel'`R'="Too far/No Transportation"
+	putexcel `women_intervention_col1'`R'= matrix(p_Bong_Yes_3)
+	putexcel `women_intervention_col2'`R'= matrix(p_Bomi_Yes_3)
+	putexcel `women_intervention_col3'`R'=matrix(p_Total_Yes_3)
+	putexcel `women_control_col1'`R'=  matrix(p_Gbarpolu_Yes_3)
+		local R=`R'+1
+		
+	** Don't trust the facility/Poor service quality
+	putexcel `rowlabel'`R'="Don't trust the facility/poor service quality"
+	putexcel `women_intervention_col1'`R'= matrix(p_Bong_Yes_4)
+	putexcel `women_intervention_col2'`R'= matrix(p_Bomi_Yes_4)
+	putexcel `women_intervention_col3'`R'=matrix(p_Total_Yes_4)
+	putexcel `women_control_col1'`R'=  matrix(p_Gbarpolu_Yes_4)
+		local R=`R'+1
+		
+	** Not the first child
+	putexcel `rowlabel'`R'="Not the first child"
+	putexcel `women_intervention_col1'`R'= matrix(p_Bong_Yes_6)
+	putexcel `women_intervention_col2'`R'= matrix(p_Bomi_Yes_6)
+	putexcel `women_intervention_col3'`R'=matrix(p_Total_Yes_6)
+	putexcel `women_control_col1'`R'=  matrix(p_Gbarpolu_Yes_6)
+		local R=`R'+1
+		
+	** Not necessary
+	putexcel `rowlabel'`R'="Not Necessary"
+	putexcel `women_intervention_col1'`R'= matrix(p_Bong_Yes_7)
+	putexcel `women_intervention_col2'`R'= matrix(p_Bomi_Yes_7)
+	putexcel `women_intervention_col3'`R'=matrix(p_Total_Yes_7)
+	putexcel `women_control_col1'`R'=  matrix(p_Gbarpolu_Yes_7)
+		local R=`R'+1
+		
+	** Spouse/Partner didn't think it was necessary
+	putexcel `rowlabel'`R'="Spouse/Partner didn't think it was necessary"
+	putexcel `women_intervention_col1'`R'= matrix(p_Bong_Yes_8)
+	putexcel `women_intervention_col2'`R'= matrix(p_Bomi_Yes_8)
+	putexcel `women_intervention_col3'`R'=matrix(p_Total_Yes_8)
+	putexcel `women_control_col1'`R'=  matrix(p_Gbarpolu_Yes_8)
+		local R=`R'+1
+		
+	** Afraid to go
+	putexcel `rowlabel'`R'="Afraid to go"
+	putexcel `women_intervention_col1'`R'= matrix(p_Bong_Yes_15)
+	putexcel `women_intervention_col2'`R'= matrix(p_Bomi_Yes_15)
+	putexcel `women_intervention_col3'`R'=matrix(p_Total_Yes_15)
+	putexcel `women_control_col1'`R'=  matrix(p_Gbarpolu_Yes_15)
+		local R=`R'+1
+		
+	** Other
+	putexcel `rowlabel'`R'="Other"
+	putexcel `women_intervention_col1'`R'= matrix(p_Bong_Yes_97)
+	putexcel `women_intervention_col2'`R'= matrix(p_Bomi_Yes_97)
+	putexcel `women_intervention_col3'`R'=matrix(p_Total_Yes_97)
+	putexcel `women_control_col1'`R'=  matrix(p_Gbarpolu_Yes_97)
+		local R=`R'+1
 
 
 ** Perceived Self-Efficacy to Use ANC
@@ -862,7 +964,7 @@ tab ls_512 if female==1 & control==1 & haschild2yrs==1 & ls_511==1, matcell(tabl
 	matrix female_children_Gbarpolu=table[3,1]
 	matrix female_sibling_Gbarpolu=table[3,1]
 	matrix female_other_Gbarpolu=table[3,1]
-	matrix female_Gbarpolu_Total=female_parter_Gbarpolu[1,1]+female_mil_Gbarpolu[1,1]+female_fil_Gbarpolu[1,1]+female_children_Gbarpolu[1,1]+female_sibling_Gbarpolu[1,1]+female_other_Gbarpolu[1,1]
+	matrix female_Gbarpolu_Total=female_partner_Gbarpolu[1,1]+female_mil_Gbarpolu[1,1]+female_fil_Gbarpolu[1,1]+female_children_Gbarpolu[1,1]+female_sibling_Gbarpolu[1,1]+female_other_Gbarpolu[1,1]
 	
 	matrix  p_partner_Gbarpolu_female= female_partner_Gbarpolu[1,1]/female_Gbarpolu_Total[1,1]
 	matrix      p_mil_Gbarpolu_female=     female_mil_Gbarpolu[1,1]/female_Gbarpolu_Total[1,1]

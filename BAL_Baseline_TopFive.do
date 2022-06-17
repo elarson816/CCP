@@ -14,7 +14,7 @@ foreach list in $list {
 	egen n_`var1'_`list'=count(`var1'_`list')
 		
 	* Percent of people who heard of method
-	gen p_`var2'_`list'=n_`var1'_`list'/total_n_`sex'
+	gen p_`var2'_`list'=n_`var1'_`list'/total_n
 
 	* Recode back
 	recode `var1'_`list' . = 0
